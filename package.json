@@ -1,0 +1,18 @@
+{
+  "name": "peta-desa-cimenteng",
+  "version": "2.0.0",
+  "description": "Peta Interaktif Desa Cimenteng dengan Supabase",
+  "scripts": {
+    "start": "vercel dev",
+    "build": "echo 'Static site - no build needed'"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0"
+  },
+  "devDependencies": {
+    "vercel": "^34.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

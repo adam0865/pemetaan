@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "routes": [
+    {
+      "src": "/api/(categories|locations|location|upload|auth|db)",
+      "dest": "/api/$1.js"
+    },
+    {
+      "src": "/api/locations/(.+)",
+      "dest": "/api/location.js?id=$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ],
+  "outputDirectory": ".",
+  "public": true,
+  "env": {
+    "SUPABASE_URL": "@SUPABASE_URL",
+    "SUPABASE_PUBLISHABLE_KEY": "@SUPABASE_PUBLISHABLE_KEY",
+    "SUPABASE_SECRET_KEY": "@SUPABASE_SECRET_KEY"
+  }
+}

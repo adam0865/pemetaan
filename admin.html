@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Data Tempat | Desa Cimenteng</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { min-height: 100vh; font-family: 'Poppins', sans-serif; background: #0b1220; color: rgba(255,255,255,0.92); padding: 20px; }
+    .container { max-width: 1120px; margin: 0 auto; }
+    h1 { font-size: 24px; margin-bottom: 8px; display:flex; align-items:center; gap:10px; }
+    h1 i { color:#22c55e; }
+    .sub { color:rgba(255,255,255,0.62); font-size:14px; line-height:1.55; margin-bottom:22px; }
+    .toolbar { display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-bottom:20px; }
+    .btn { padding:10px 16px; border-radius:12px; border:1px solid rgba(255,255,255,0.16); background:rgba(255,255,255,0.07); color:#fff; cursor:pointer; font-family:inherit; font-size:14px; display:inline-flex; align-items:center; justify-content:center; gap:8px; text-decoration:none; }
+    .btn:hover { background:rgba(255,255,255,0.13); }
+    .btn-primary { background:#22c55e; border-color:#22c55e; color:#06110a; font-weight:800; }
+    .btn-danger { background:#ef4444; border-color:#ef4444; }
+    .btn-sm { padding:7px 10px; font-size:12px; border-radius:10px; }
+    .count-label { margin-left:auto; color:rgba(255,255,255,0.58); font-size:13px; }
+    .table-wrap { border-radius:16px; border:1px solid rgba(255,255,255,0.11); background:rgba(255,255,255,0.035); overflow-x:auto; }
+    table { width:100%; min-width:760px; border-collapse:collapse; font-size:13px; }
+    th, td { padding:12px 14px; text-align:left; border-bottom:1px solid rgba(255,255,255,0.06); vertical-align:middle; }
+    th { background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.7); font-size:12px; text-transform:uppercase; letter-spacing:.4px; }
+    tr:hover td { background:rgba(255,255,255,0.04); }
+    .badge { display:inline-flex; align-items:center; gap:7px; padding:5px 10px; border-radius:999px; background:rgba(34,197,94,0.15); color:#22c55e; font-size:11px; font-weight:800; }
+    .photo-preview { width:50px; height:50px; border-radius:12px; object-fit:cover; border:1px solid rgba(255,255,255,0.12); }
+    .photo-placeholder { width:50px; height:50px; border-radius:12px; background:rgba(255,255,255,0.06); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.34); }
+    .photo-count { display:block; margin-top:4px; color:rgba(255,255,255,0.5); font-size:11px; }
+    .actions { display:flex; gap:7px; }
+    .empty-state { padding:40px; text-align:center; color:rgba(255,255,255,0.55); border:1px dashed rgba(255,255,255,0.14); border-radius:16px; margin-top:14px; }
+    .empty-state i { font-size:38px; opacity:.45; margin-bottom:10px; }
+    .modal-overlay { position:fixed; inset:0; z-index:999; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.68); backdrop-filter:blur(5px); padding:18px; }
+    .modal { width:min(680px,96vw); max-height:92vh; overflow:auto; background:#141d2b; border:1px solid rgba(255,255,255,0.13); border-radius:20px; padding:24px; box-shadow:0 20px 60px rgba(0,0,0,.5); }
+    .modal h2 { font-size:18px; display:flex; align-items:center; gap:10px; margin-bottom:18px; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .form-group { margin-bottom:16px; }
+    label { display:block; font-size:13px; font-weight:700; color:rgba(255,255,255,.76); margin-bottom:6px; }
+    input, select, textarea { width:100%; padding:11px 14px; border-radius:12px; border:1px solid rgba(255,255,255,.13); background:rgba(255,255,255,.065); color:#fff; font-family:inherit; font-size:14px; outline:none; }
+    input:focus, select:focus, textarea:focus { border-color:#22c55e; box-shadow:0 0 0 3px rgba(34,197,94,.2); }
+    textarea { resize: vertical; min-height: 60px; }
+    .hint { color:rgba(255,255,255,.45); font-size:11px; line-height:1.45; margin-top:5px; }
+    .icon-select { display:grid; grid-template-columns:repeat(auto-fit,minmax(52px,1fr)); gap:8px; }
+    .icon-choice { height:46px; border-radius:12px; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.06); color:#fff; cursor:pointer; font-size:16px; }
+    .icon-choice.active { border-color:#22c55e; background:rgba(34,197,94,.18); }
+    .preview-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(96px,1fr)); gap:10px; margin-top:10px; }
+    .preview-item { position:relative; height:82px; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.04); }
+    .preview-item img { width:100%; height:100%; object-fit:cover; display:block; }
+    .preview-remove { position:absolute; top:5px; right:5px; width:26px; height:26px; border-radius:9px; border:1px solid rgba(255,255,255,.2); background:rgba(0,0,0,.58); color:#fff; cursor:pointer; }
+    .modal-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:20px; }
+    .hidden { display:none !important; }
+    .toast { position:fixed; right:26px; bottom:26px; z-index:9999; padding:14px 20px; border-radius:14px; background:#22c55e; color:#06110a; font-weight:800; box-shadow:0 8px 30px rgba(34,197,94,.28); font-size:14px; }
+    .toast.error { background:#ef4444; color:#fff; box-shadow:0 8px 30px rgba(239,68,68,.28); }
+
+    /* Loading state */
+    .loading-rows { text-align:center; padding:40px; color:rgba(255,255,255,0.4); }
+    .loading-rows i { font-size:24px; animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Auth warning */
+    .auth-warning { text-align:center; padding:60px 20px; }
+    .auth-warning i { font-size:48px; color:rgba(255,255,255,0.3); margin-bottom:16px; }
+    .auth-warning h2 { font-size:20px; margin-bottom:8px; }
+    .auth-warning p { color:rgba(255,255,255,0.55); margin-bottom:20px; }
+
+    /* Mini map in modal */
+    .map-picker-wrap {
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: 0 8px 30px rgba(0,0,0,.35);
+      position: relative;
+      margin-top: 8px;
+    }
+    #editMiniMap {
+      width: 100%;
+      height: 200px;
+      display: block;
+    }
+    .coords-inline {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 700px) {
+      body { padding: 12px; }
+      h1 { font-size: 20px; }
+      .sub { font-size: 13px; margin-bottom: 16px; }
+      .toolbar { display: grid; grid-template-columns: 1fr; }
+      .btn { width: 100%; }
+      .count-label { margin-left: 0; text-align: center; }
+      .form-row { grid-template-columns: 1fr; }
+      .modal { padding: 18px; max-height: 94vh; }
+      .modal-actions { flex-direction: column-reverse; }
+      .modal-actions .btn { width: 100%; }
+      table { font-size: 12px; }
+      th, td { padding: 9px 10px; }
+      .photo-preview { width: 40px; height: 40px; border-radius: 10px; }
+      .photo-placeholder { width: 40px; height: 40px; border-radius: 10px; }
+      .badge { font-size: 10px; padding: 4px 8px; }
+      .actions { flex-direction: column; gap: 5px; }
+      .btn-sm { padding: 6px 8px; font-size: 11px; }
+      .icon-select { grid-template-columns: repeat(auto-fit, minmax(44px, 1fr)); gap: 6px; }
+      .icon-choice { height: 40px; font-size: 14px; border-radius: 10px; }
+      .preview-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 8px; }
+      .preview-item { height: 68px; border-radius: 10px; }
+      .preview-remove { width: 22px; height: 22px; border-radius: 7px; }
+      .toast { right: auto; left: 50%; transform: translateX(-50%) translateY(80px); }
+      .toast.visible { transform: translateX(-50%) translateY(0); }
+      input, select, textarea { padding: 10px 12px; font-size: 13px; }
+      label { font-size: 12px; }
+    }
+
+    @media (max-width: 400px) {
+      body { padding: 8px; }
+      h1 { font-size: 18px; }
+      .sub { font-size: 12px; }
+      .modal { padding: 14px; }
+      table { font-size: 11px; }
+      th, td { padding: 7px 8px; }
+      .photo-preview { width: 34px; height: 34px; }
+      .photo-placeholder { width: 34px; height: 34px; }
+      .icon-select { grid-template-columns: repeat(auto-fit, minmax(40px, 1fr)); }
+      .preview-grid { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); }
+      .preview-item { height: 60px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="adminContent" style="display:none;">
+    <h1><i class="fas fa-shield-alt"></i> Admin Panel</h1>
+    <p class="sub">Kelola data tempat: lihat detail, edit, atau hapus. Tambah tempat baru via tombol di bawah.</p>
+
+    <div class="toolbar">
+      <button class="btn" id="refreshBtn" type="button"><i class="fas fa-sync"></i> Muat Ulang</button>
+      <a class="btn" href="index.html" target="_blank" rel="noopener"><i class="fas fa-map"></i> Lihat Peta</a>
+      <a class="btn" href="tambah.html"><i class="fas fa-plus"></i> Tambah Tempat</a>
+      <a class="btn" href="login.html" id="logoutBtn" style="background:rgba(239,68,68,0.15);border-color:rgba(239,68,68,0.3);"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      <span class="count-label" id="countLabel">0 tempat</span>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Foto</th>
+            <th>Nama</th>
+            <th>Kategori</th>
+            <th>Koordinat</th>
+            <th style="width:150px">Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <tr><td colspan="5" class="loading-rows"><i class="fas fa-spinner"></i> Memuat data...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="emptyState" class="empty-state hidden">
+      <i class="fas fa-map-pin"></i>
+      <p>Belum ada data tempat. Klik "Tambah Tempat" untuk memulai.</p>
+    </div>
+  </div>
+
+  <div class="container" id="authWarning" style="display:none;">
+    <div class="auth-warning">
+      <i class="fas fa-lock"></i>
+      <h2>Anda Belum Login</h2>
+      <p>Halaman admin hanya untuk pengguna terdaftar. Silakan login terlebih dahulu.</p>
+      <a class="btn btn-primary" href="login.html"><i class="fas fa-sign-in-alt"></i> Login Sekarang</a>
+    </div>
+  </div>
+
+  <!-- Edit Modal -->
+  <div id="modal" class="modal-overlay hidden">
+    <div class="modal">
+      <h2><i class="fas fa-map-marker-alt" style="color:#22c55e"></i> <span id="modalTitle">Edit Tempat</span></h2>
+      <form id="placeForm" autocomplete="off">
+        <input type="hidden" id="editId" value="">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fName">Nama Tempat *</label>
+            <input type="text" id="fName" required placeholder="Mis: Curug Cimenteng">
+          </div>
+          <div class="form-group">
+            <label for="fCategory">Kategori *</label>
+            <select id="fCategory" required>
+              <option value="">Pilih kategori...</option>
+              <option value="Pemerintahan">Pemerintahan</option>
+              <option value="Pendidikan">Pendidikan</option>
+              <option value="Kesehatan">Kesehatan</option>
+              <option value="Tempat Ibadah">Tempat Ibadah</option>
+              <option value="Fasilitas Umum">Fasilitas Umum</option>
+              <option value="Wisata">Wisata</option>
+              <option value="UMKM">UMKM</option>
+              <option value="Lainnya">Lainnya</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fAddress">Alamat</label>
+            <input type="text" id="fAddress" placeholder="Alamat lengkap">
+          </div>
+          <div class="form-group">
+            <label for="fMapsUrl">Link Google Maps</label>
+            <input type="url" id="fMapsUrl" placeholder="https://maps.google.com/...">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="fDescription">Deskripsi</label>
+          <textarea id="fDescription" placeholder="Deskripsi tempat (opsional)"></textarea>
+        </div>
+
+        <!-- Mini map for editing location -->
+        <div class="form-group">
+          <label>Pilih Lokasi di Peta</label>
+          <div class="map-picker-wrap">
+            <div id="editMiniMap"></div>
+          </div>
+          <div class="coords-inline">
+            <div class="form-group" style="margin-bottom:0">
+              <label for="fLat">Latitude</label>
+              <input type="text" id="fLat" readonly>
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <label for="fLng">Longitude</label>
+              <input type="text" id="fLng" readonly>
+            </div>
+          </div>
+          <div class="hint">Klik peta untuk memindahkan lokasi.</div>
+        </div>
+
+        <div class="form-group">
+          <label for="fPhotoUrl">URL Foto</label>
+          <input type="url" id="fPhotoUrl" placeholder="https://...">
+          <div class="hint">URL foto yang sudah diupload ke storage.</div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn" id="cancelBtn"><i class="fas fa-times"></i> Batal</button>
+          <button type="submit" class="btn btn-primary" id="submitBtn"><i class="fas fa-save"></i> Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="api.js"></script>
+  <script>
+  (function() {
+    'use strict';
+
+    // ── Auth check ──
+    if (!CimentengAPI.isLoggedIn()) {
+      document.getElementById('adminContent').style.display = 'none';
+      document.getElementById('authWarning').style.display = 'block';
+      return;
+    }
+
+    document.getElementById('adminContent').style.display = 'block';
+
+    var LOCATIONS = [];
+    var editMap = null;
+    var editMarker = null;
+
+    // ── Escape HTML ──
+    function escapeHtml(str) {
+      return String(str == null ? "" : str).replace(/[&<>"']/g, function(c) {
+        return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];
+      });
+    }
+
+    // ── Load all locations ──
+    function loadLocations() {
+      var tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '<tr><td colspan="5" class="loading-rows"><i class="fas fa-spinner"></i> Memuat data...</td></tr>';
+
+      CimentengAPI.getLocations().then(function(result) {
+        if (result.success && result.data) {
+          LOCATIONS = result.data;
+          renderTable();
+        } else {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:rgba(255,255,255,0.4);padding:30px;">⚠️ Gagal memuat data. Periksa koneksi atau konfigurasi API.</td></tr>';
+        }
+      }).catch(function(err) {
+        console.error('Load error:', err);
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#ef4444;padding:30px;">❌ Error: ' + escapeHtml(err.message) + '</td></tr>';
+      });
+    }
+
+    // ── Render table ──
+    function renderTable() {
+      var tbody = document.getElementById('tableBody');
+      var empty = document.getElementById('emptyState');
+      var countLabel = document.getElementById('countLabel');
+
+      countLabel.textContent = LOCATIONS.length + ' tempat';
+
+      if (!LOCATIONS.length) {
+        tbody.innerHTML = '';
+        empty.classList.remove('hidden');
+        return;
+      }
+
+      empty.classList.add('hidden');
+
+      tbody.innerHTML = LOCATIONS.map(function(p) {
+        var catName = p.categories ? p.categories.name : (p.category || 'Lainnya');
+        var catIcon = p.categories ? p.categories.icon : 'fa-map-pin';
+        var catColor = p.categories ? p.categories.color : '#22c55e';
+        var photoUrl = p.photo_url || '';
+        var photoHtml = photoUrl
+          ? '<img src="' + escapeHtml(photoUrl) + '" class="photo-preview" alt="' + escapeHtml(p.name) + '">'
+          : '<div class="photo-placeholder"><i class="fas fa-image"></i></div>';
+        var coords = (p.latitude && p.longitude)
+          ? p.latitude.toFixed(4) + ', ' + p.longitude.toFixed(4)
+          : '-';
+
+        return '<tr>' +
+          '<td>' + photoHtml + '</td>' +
+          '<td><strong>' + escapeHtml(p.name) + '</strong></td>' +
+          '<td><span class="badge" style="background:rgba(' + hexToRgb(catColor) + ',0.15);color:' + catColor + '"><i class="fas ' + escapeHtml(catIcon) + '"></i> ' + escapeHtml(catName) + '</span></td>' +
+          '<td style="font-size:11px;color:rgba(255,255,255,0.55)">' + coords + '</td>' +
+          '<td><div class="actions">' +
+            '<button class="btn btn-sm" type="button" onclick="window.editPlace(\'' + escapeHtml(String(p.id)) + '\')" title="Edit"><i class="fas fa-edit"></i></button>' +
+            '<button class="btn btn-sm btn-danger" type="button" onclick="window.deletePlace(\'' + escapeHtml(String(p.id)) + '\')" title="Hapus"><i class="fas fa-trash"></i></button>' +
+          '</div></td>' +
+          '</tr>';
+      }).join('');
+    }
+
+    function hexToRgb(hex) {
+      hex = hex.replace('#', '');
+      if (hex.length === 3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+      var r = parseInt(hex.substring(0,2), 16);
+      var g = parseInt(hex.substring(2,2), 16);
+      var b = parseInt(hex.substring(4,2), 16);
+      return r + ',' + g + ',' + b;
+    }
+
+    // ── Edit place ──
+    window.editPlace = function(id) {
+      var place = LOCATIONS.find(function(p) { return String(p.id) === String(id); });
+      if (!place) return;
+
+      document.getElementById('editId').value = place.id;
+      document.getElementById('fName').value = place.name;
+      document.getElementById('fCategory').value = place.categories ? place.categories.name : (place.category || '');
+      document.getElementById('fAddress').value = place.address || '';
+      document.getElementById('fDescription').value = place.description || '';
+      document.getElementById('fMapsUrl').value = place.google_maps_url || '';
+      document.getElementById('fPhotoUrl').value = place.photo_url || '';
+      document.getElementById('fLat').value = place.latitude || '';
+      document.getElementById('fLng').value = place.longitude || '';
+
+      document.getElementById('modalTitle').textContent = 'Edit Tempat';
+      document.getElementById('modal').classList.remove('hidden');
+
+      // Init mini map for editing
+      initEditMap(place.latitude, place.longitude);
+    };
+
+    // ── Init edit map ──
+    function initEditMap(lat, lng) {
+      if (editMap) {
+        editMap.remove();
+        editMap = null;
+        editMarker = null;
+      }
+
+      lat = parseFloat(lat) || -6.9623;
+      lng = parseFloat(lng) || 107.0480;
+
+      editMap = L.map('editMiniMap', {
+        center: [lat, lng],
+        zoom: 16,
+        zoomControl: false,
+        attributionControl: false
+      });
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19
+      }).addTo(editMap);
+
+      var pinIcon = L.divIcon({
+        className: 'custom-pin',
+        html: '<svg width="32" height="42" viewBox="0 0 32 42" fill="none"><path d="M16 0C7.716 0 1 6.269 1 14c0 9.5 15 26 15 26s15-16.5 15-26c0-7.731-6.716-14-15-14z" fill="#22c55e" stroke="#16a34a" stroke-width="1.5"/><circle cx="16" cy="14" r="5.5" fill="#0b1220" stroke="#16a34a" stroke-width="1.5"/><circle cx="16" cy="14" r="2.5" fill="#22c55e"/></svg>',
+        iconSize: [32, 42],
+        iconAnchor: [16, 42]
+      });
+
+      editMarker = L.marker([lat, lng], { icon: pinIcon, draggable: true }).addTo(editMap);
+
+      editMarker.on('drag', function(e) {
+        document.getElementById('fLat').value = e.latlng.lat.toFixed(6);
+        document.getElementById('fLng').value = e.latlng.lng.toFixed(6);
+      });
+
+      editMap.on('click', function(e) {
+        editMarker.setLatLng([e.latlng.lat, e.latlng.lng]);
+        document.getElementById('fLat').value = e.latlng.lat.toFixed(6);
+        document.getElementById('fLng').value = e.latlng.lng.toFixed(6);
+      });
+    }
+
+    // ── Delete place ──
+    window.deletePlace = function(id) {
+      if (!confirm('Yakin ingin menghapus tempat ini?')) return;
+
+      CimentengAPI.deleteLocation(id).then(function(result) {
+        if (result.success) {
+          showToast('Tempat berhasil dihapus.');
+          loadLocations();
+        } else {
+          showToast('❌ ' + (result.message || 'Gagal menghapus.'), true);
+        }
+      }).catch(function(err) {
+        showToast('❌ ' + err.message, true);
+      });
+    };
+
+    // ── Submit form ──
+    document.getElementById('placeForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      var id = document.getElementById('editId').value;
+      var name = document.getElementById('fName').value.trim();
+      var categoryLabel = document.getElementById('fCategory').value;
+      var address = document.getElementById('fAddress').value.trim();
+      var description = document.getElementById('fDescription').value.trim();
+      var mapsUrl = document.getElementById('fMapsUrl').value.trim();
+      var photoUrl = document.getElementById('fPhotoUrl').value.trim();
+      var lat = parseFloat(document.getElementById('fLat').value);
+      var lng = parseFloat(document.getElementById('fLng').value);
+
+      if (!name || !categoryLabel) {
+        showToast('Nama dan kategori wajib diisi.', true);
+        return;
+      }
+
+      if (isNaN(lat) || isNaN(lng)) {
+        showToast('Koordinat lokasi harus valid.', true);
+        return;
+      }
+
+      var submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner"></span> Menyimpan...';
+
+      var data = {
+        name: name,
+        category: categoryLabel,
+        description: description,
+        address: address,
+        latitude: lat,
+        longitude: lng,
+        google_maps_url: mapsUrl || null,
+        photo_url: photoUrl || null
+      };
+
+      var promise;
+      if (id) {
+        promise = CimentengAPI.updateLocation(id, data);
+      } else {
+        promise = CimentengAPI.createLocation(data);
+      }
+
+      promise.then(function(result) {
+        if (result.success) {
+          showToast('✅ Berhasil disimpan!');
+          closeModal();
+          loadLocations();
+        } else {
+          showToast('❌ ' + (result.message || 'Gagal menyimpan.'), true);
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<i class="fas fa-save"></i> Simpan';
+        }
+      }).catch(function(err) {
+        showToast('❌ ' + err.message, true);
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> Simpan';
+      });
+    });
+
+    // ── Modal controls ──
+    function closeModal() {
+      document.getElementById('modal').classList.add('hidden');
+      if (editMap) {
+        editMap.remove();
+        editMap = null;
+        editMarker = null;
+      }
+    }
+
+    document.getElementById('cancelBtn').addEventListener('click', closeModal);
+    document.getElementById('modal').addEventListener('click', function(e) {
+      if (e.target === e.currentTarget) closeModal();
+    });
+    document.getElementById('refreshBtn').addEventListener('click', loadLocations);
+
+    // ── Toast ──
+    function showToast(msg, isError) {
+      var existing = document.querySelector('.toast');
+      if (existing) existing.remove();
+      var div = document.createElement('div');
+      div.className = 'toast' + (isError ? ' error' : '');
+      div.textContent = msg;
+      document.body.appendChild(div);
+      setTimeout(function() { div.remove(); }, 3000);
+    }
+
+    // ── Init ──
+    loadLocations();
+
+  })();
+  </script>
+</body>
+</html>
