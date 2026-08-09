@@ -10,8 +10,8 @@
   <link rel="stylesheet" href="styles.css">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { overflow-x: hidden; }
-    body { min-height: 100vh; font-family: 'Poppins', sans-serif; background: #0b1220; color: rgba(255,255,255,0.92); padding: 20px; overflow-x: hidden; }
+    html { overflow-x: hidden; overflow-y: auto; scroll-behavior: smooth; }
+    body { min-height: 100vh; font-family: 'Poppins', sans-serif; background: #0b1220; color: rgba(255,255,255,0.92); padding: 20px; overflow-x: hidden; overflow-y: auto; }
     .container { max-width: 720px; margin: 0 auto; }
     h1 { font-size: 24px; margin-bottom: 8px; display:flex; align-items:center; gap:10px; }
     h1 i { color:#22c55e; }
@@ -356,7 +356,9 @@
     center: [DEF_LAT, DEF_LNG],
     zoom: DEF_ZOOM,
     zoomControl: false,
-    attributionControl: false
+    attributionControl: false,
+    scrollWheelZoom: false,
+    doubleClickZoom: false
   });
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
