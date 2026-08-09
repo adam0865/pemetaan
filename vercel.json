@@ -1,5 +1,10 @@
 {
-  "version": 2,
-  "buildCommand": "mkdir -p public && cp *.html *.js *.css *.svg *.geojson *.kml public/ 2>/dev/null || true",
-  "outputDirectory": "public"
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "node scripts/build.js",
+  "outputDirectory": "public",
+  "functions": {
+    "api/**/*.js": {
+      "runtime": "@vercel/node@3.0.0"
+    }
+  }
 }
