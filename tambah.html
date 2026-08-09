@@ -10,7 +10,8 @@
   <link rel="stylesheet" href="styles.css">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { min-height: 100vh; font-family: 'Poppins', sans-serif; background: #0b1220; color: rgba(255,255,255,0.92); padding: 20px; }
+    html { overflow-x: hidden; }
+    body { min-height: 100vh; font-family: 'Poppins', sans-serif; background: #0b1220; color: rgba(255,255,255,0.92); padding: 20px; overflow-x: hidden; }
     .container { max-width: 720px; margin: 0 auto; }
     h1 { font-size: 24px; margin-bottom: 8px; display:flex; align-items:center; gap:10px; }
     h1 i { color:#22c55e; }
@@ -22,8 +23,10 @@
     .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
     .form-group { margin-bottom:16px; }
     label { display:block; font-size:13px; font-weight:700; color:rgba(255,255,255,.76); margin-bottom:6px; }
-    input, select, textarea { width:100%; padding:11px 14px; border-radius:12px; border:1px solid rgba(255,255,255,.13); background:rgba(255,255,255,.065); color:#fff; font-family:inherit; font-size:14px; outline:none; }
+    input, select, textarea { width:100%; padding:11px 14px; border-radius:12px; border:1px solid rgba(255,255,255,.13); background:rgba(255,255,255,.065); color:#fff; font-family:inherit; font-size:14px; outline:none; -webkit-appearance: none; appearance: none; }
+    select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='rgba(255,255,255,0.6)' d='M1.41 0L6 4.58 10.59 0 12 1.41l-6 6-6-6z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
     input:focus, select:focus, textarea:focus { border-color:#22c55e; box-shadow:0 0 0 3px rgba(34,197,94,.2); }
+    select option { background: #0b1220; color: rgba(255,255,255,0.92); padding: 10px; }
     input[readonly] { background:rgba(255,255,255,.035); color:rgba(255,255,255,.55); cursor:default; }
     textarea { resize: vertical; min-height: 80px; }
     .hint { color:rgba(255,255,255,.45); font-size:11px; line-height:1.45; margin-top:5px; }
@@ -202,6 +205,7 @@
       .toast.visible { transform: translateX(-50%) translateY(0); }
       input, select, textarea { padding: 10px 12px; font-size: 13px; }
       label { font-size: 12px; }
+      select { padding-right: 36px; }
     }
 
     @media (max-width: 400px) {
