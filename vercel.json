@@ -1,3 +1,5 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json"
+  "version": 2,
+  "buildCommand": "mkdir -p public && cp *.html *.js *.css *.svg *.geojson *.kml public/ 2>/dev/null || true",
+  "outputDirectory": "public"
 }
