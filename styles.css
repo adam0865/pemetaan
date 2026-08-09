@@ -659,6 +659,7 @@ button:focus, input:focus{ outline: none; }
     opacity: 0;
     pointer-events: none;
     transition: transform .28s ease, opacity .28s ease;
+    z-index: 50 !important;
   }
   .sidebar:not(.hidden-sidebar){
     transform: translateX(0);
@@ -670,7 +671,7 @@ button:focus, input:focus{ outline: none; }
     display: none;
     position: fixed;
     inset: 0;
-    z-index: 9;
+    z-index: 49;
     background: rgba(0,0,0,0.55);
     backdrop-filter: blur(3px);
     transition: opacity .28s ease;
@@ -687,22 +688,46 @@ button:focus, input:focus{ outline: none; }
   .logo-text h1{ font-size: 13px; }
   .logo-text span{ font-size: 11px; }
   .header-btn{ width: 36px; height: 36px; }
-  .map-controls{ right: 10px; bottom: 10px; gap: 8px; }
+
+  /* Map controls: reposition for mobile visibility */
+  .map-controls{
+    right: auto;
+    left: 10px;
+    bottom: 10px;
+    top: auto;
+    gap: 8px;
+    z-index: 20;
+  }
   .map-btn{ width: 40px; height: 40px; border-radius: 14px; }
-  .fab-container{ right: 10px; top: 70px; }
-  .fab-main{ width: 46px; height: 46px; }
-  .fab-option{ padding: 8px 10px; font-size: 12px; }
+  .zoom-control, .layer-control{ flex-direction: column; gap: 8px; }
+
+  /* FAB: move to top-right, smaller */
+  .fab-container{
+    right: 10px;
+    top: 66px;
+    z-index: 15;
+  }
+  .fab-main{ width: 42px; height: 42px; border-radius: 16px; }
+  .fab-option{ padding: 8px 10px; font-size: 12px; border-radius: 14px; }
+
+  /* Info panel */
   .info-panel{ width: calc(100% - 20px) !important; bottom: 10px; max-height: 55vh; overflow:auto; }
   .info-photo{ height: 150px; }
   .info-content{ padding: 10px 12px; font-size: 13px; }
   .info-actions{ padding: 8px 12px 12px; gap: 8px; }
   .info-actions .btn{ font-size: 12px; height: 38px; padding: 0 10px; }
-  .layer-panel{ width: 190px; }
+
+  /* Layer panel */
+  .layer-panel{ width: 180px; margin-right: 0; margin-left: 10px; }
+  .layer-option{ font-size: 12px; padding: 8px; }
+
   .social-links a{ width: 34px; height: 34px; }
   .header-center{ display: none; }
+
+  /* Photo dock */
   .photo-dock{
     left: 10px;
-    right: 58px;
+    right: 10px;
     bottom: 10px;
     transform: none;
     width: auto;
