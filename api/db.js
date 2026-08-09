@@ -16,4 +16,20 @@ function getSupabaseClient() {
   });
 }
 
-module.exports = { getSupabaseClient };
+function getSupabaseAuthClient() {
+  const url = process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_PUBLISHABLE_KEY;
+
+  if (!url || !key) {
+    throw new Error('Supabase auth credentials not configured. Please set SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY environment variables.');
+  }
+
+  return createClient(url, key, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
+    }
+  });
+}
+
+module.exports = { getSupabaseClient, getSupabaseAuthClient };

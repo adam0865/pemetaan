@@ -1,4 +1,4 @@
-const { getSupabaseClient } = require('./db');
+const { getSupabaseAuthClient } = require('./db');
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -14,7 +14,7 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const supabase = getSupabaseClient();
+    const supabase = getSupabaseAuthClient();
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -30,6 +30,13 @@ module.exports = async (req, res) => {
     });
 
     if (error) {
+      // Safe server-side logging (no sensitive data)
+      console.error('Supabase auth error:', {
+        status: error.status,
+        name: error.name,
+        message: error.message
+      });
+
       if (error.status === 401 || error.message?.includes('Invalid')) {
         return res.status(401).json({
           success: false,
