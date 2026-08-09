@@ -4,8 +4,8 @@
   "description": "Peta Interaktif Desa Cimenteng dengan Supabase",
   "scripts": {
     "start": "vercel dev",
-    "build": "mkdir -p public && cp *.html *.js *.css *.svg *.geojson *.kml public/ 2>/dev/null || true",
-    "vercel-build": "mkdir -p public && cp *.html *.js *.css *.svg *.geojson *.kml public/ 2>/dev/null || true"
+    "build": "node scripts/build.js",
+    "vercel-build": "node scripts/build.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0"
