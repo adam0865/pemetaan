@@ -42,12 +42,12 @@
   // ── Session management ──
   function getCimentengSession() {
     try {
-      var raw = localStorage.getItem('cimenteng_session');
+      var raw = sessionStorage.getItem('cimenteng_session');
       if (!raw) return null;
       var session = JSON.parse(raw);
       // Check expiry
       if (session.expires_at && Date.now() >= session.expires_at * 1000) {
-        localStorage.removeItem('cimenteng_session');
+        sessionStorage.removeItem('cimenteng_session');
         return null;
       }
       return session;
@@ -58,15 +58,15 @@
 
   function setCimentengSession(session) {
     try {
-      localStorage.setItem('cimenteng_session', JSON.stringify(session));
+      sessionStorage.setItem('cimenteng_session', JSON.stringify(session));
     } catch (e) {
-      // localStorage might be full or disabled
+      // sessionStorage might be full or disabled
     }
   }
 
   function clearCimentengSession() {
     try {
-      localStorage.removeItem('cimenteng_session');
+      sessionStorage.removeItem('cimenteng_session');
     } catch (e) {}
   }
 
