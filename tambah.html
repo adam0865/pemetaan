@@ -230,7 +230,8 @@
     <div class="form-row">
       <div class="form-group">
         <label for="fName">Nama Tempat *</label>
-        <input type="text" id="fName" required placeholder="Mis: Curug Cimenteng">
+        <input type="text" id="fName" required maxlength="150" pattern="^[a-zA-Z0-9\s\-\,\.\'\/\(\)]+$" placeholder="Mis: Curug Cimenteng">
+        <div class="hint">Maksimal 150 karakter. Hanya huruf, angka, spasi, dan tanda baca dasar.</div>
       </div>
       <div class="form-group">
         <label for="fCategory">Kategori *</label>
@@ -255,8 +256,8 @@
       </div>
       <div class="form-group">
         <label for="fMapsUrl">Link Google Maps</label>
-        <input type="url" id="fMapsUrl" placeholder="https://maps.google.com/...">
-        <div class="hint">Opsional. Format: @lat,lng atau ?q=lat,lng</div>
+        <input type="url" id="fMapsUrl" placeholder="https://maps.google.com/..." pattern="https?://.+">
+        <div class="hint">Opsional. Harus diawali dengan https:// atau http://</div>
       </div>
     </div>
 

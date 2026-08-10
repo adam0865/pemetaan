@@ -1,7 +1,7 @@
 const { getSupabaseClient } = require('./db');
 
 // ── Allowed origin for CORS ──
-const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || 'https://pemetaan.vercel.app';
+const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || 'https://pemetaan-xi.vercel.app';
 
 // ── Helper: set CORS headers ──
 function setCorsHeaders(res) {

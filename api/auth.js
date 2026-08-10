@@ -1,7 +1,7 @@
 const { getSupabaseAuthClient } = require('./db');
 
 // ── Allowed origin for CORS ──
-const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || 'https://pemetaan.vercel.app';
+const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || 'https://pemetaan-xi.vercel.app';
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
